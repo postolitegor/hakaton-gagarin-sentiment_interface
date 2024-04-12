@@ -1,6 +1,6 @@
 ## Status badge
 
-[![Python CI](https://github.com/Sharp-Objects/hakaton-gagarin-sentiment_interface/actions/workflows/main.yml/badge.svg)](https://github.com/Sharp-Objects/hakaton-gagarin-sentiment_interface/actions/workflows/main.yml)
+[![Python CI](https://github.com/Sharp-Objects/hakaton-gagarin-sentiment_interface/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/Sharp-Objects/hakaton-gagarin-sentiment_interface/actions/workflows/main.yml)
 
 # Требования к интерфейсу
 
