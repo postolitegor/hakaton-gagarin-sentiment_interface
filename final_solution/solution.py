@@ -4,13 +4,19 @@ EntityScoreType = tp.Tuple[int, float]  # (entity_id, entity_score)
 MessageResultType = tp.List[EntityScoreType]
 
 
-def score_texts(messages: tp.Iterable[str], *args, **kwargs) -> tp.Iterable[MessageResultType]:
+def score_texts(
+        messages: tp.Iterable[str], *args, **kwargs
+) -> tp.Iterable[MessageResultType]:
     """
-    Evaluate the score for each company in each message.
+    Main function (see tests for more clarifications)
+    Args:
+        messages (tp.Iterable[str]): any iterable of strings (utf-8 encoded text messages)
 
-    @param messages: Iterable collection of strings (utf-8 encoded text messages)
-    @return: Iterable collection of company scores (company id, score) for each message.
-    @raises ValueError: If any of the message length is more than 2048 characters.
+    Returns:
+        tp.Iterable[tp.Tuple[int, float]]: for any messages returns MessageResultType object
+    -------
+    Clarifications:
+    >>> assert all([len(m) < 10 ** 11 for m in messages]) # all messages are shorter than 2048 characters
     """
 
     # Prompt check for empty input and single empty string
@@ -19,10 +25,6 @@ def score_texts(messages: tp.Iterable[str], *args, **kwargs) -> tp.Iterable[Mess
 
     if len(messages) == 1 and messages[0] == "":
         return [[tuple()]]
-
-    # Raise an error if any messages exceed limit of 2048 characters
-    if any(len(message) > 2048 for message in messages):
-        raise ValueError("Each message should be less than or equal to 2048 characters")
 
     # TODO: fix me
     COMPANIES = {"Сбер": 150, "Тинькофф": 225}
