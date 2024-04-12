@@ -20,14 +20,14 @@ def score_texts(
     """
 
     # To support checking length and indexing of object
-    messages = list(messages) if hasattr(messages, "__iter__") else [messages]
+    messages = list(messages) if hasattr(messages, "__iter__") else [messages]  # type: ignore
 
     # Prompt check for empty input and single empty string
     if not messages:
         return []
 
     if len(messages) == 1 and messages[0] == "":
-        return [[tuple()]]
+        return [[tuple()]]  # type: ignore
 
     # TODO: fix me
     COMPANIES = {"Сбер": 150, "Тинькофф": 225}
