@@ -1,4 +1,10 @@
+import pickle
 import typing as tp
+from pathlib import Path
+
+import pandas as pd
+
+from final_solution.preparation_issuer import get_issuerid
 
 EntityScoreType = tp.Tuple[int, float]  # (entity_id, entity_score)
 MessageResultType = tp.List[EntityScoreType]
@@ -19,28 +25,34 @@ def score_texts(
     >>> assert all([len(m) < 10 ** 11 for m in messages]) # all messages are shorter than 2048 characters
     """
 
-    # To support checking length and indexing of object
     messages = list(messages) if hasattr(messages, "__iter__") else [messages]  # type: ignore
 
-    # Prompt check for empty input and single empty string
     if not messages:
         return []
 
     if len(messages) == 1 and messages[0] == "":
         return [[tuple()]]  # type: ignore
 
+    issuer_path: Path = Path(Path.cwd(), "data", "issuer.pickle")
+    with open(issuer_path.absolute(), 'rb') as f:
+        loaded_data_dict = pickle.load(f)
+
     # TODO: fix me
-    COMPANIES = {"Сбер": 150, "Тинькофф": 225}
     VALUE = 3.0
 
-    # Use a list comprehension to generate scores for all messages
-    scores = [
-        [
-            (base_score, VALUE)
-            for company, base_score in COMPANIES.items()
-            if message.count(company) > 0
-        ]
-        for message in messages
-    ]
+    scores = []
+
+    example_path: Path = Path(Path.cwd(), "data", "example.xlsx")
+    df = pd.read_excel(example_path.absolute())
+
+    messages = df['MessageText'].tolist()
+
+    # for message in messages:
+    #     print(message)
+
+    for message in messages:
+        message = message.lower()
+        result = get_issuerid(message, loaded_data_dict)
+        scores.append([(result, VALUE)])
 
     return scores

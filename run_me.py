@@ -1,5 +1,6 @@
 import json
 import pathlib
+import time
 import typing as tp
 
 from final_solution.solution import score_texts
@@ -21,9 +22,15 @@ def save_data(data, path: pathlib.PosixPath = PATH_TO_OUTPUT_DATA):
 
 
 def main():
+    start_time = time.time()
+
     texts = load_data()
     scores = score_texts(texts)
+    print(scores)
     save_data(scores)
+
+    end_time = time.time()
+    print(f'Time taken: {end_time - start_time} seconds')
 
 
 if __name__ == '__main__':
