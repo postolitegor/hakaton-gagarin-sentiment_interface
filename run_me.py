@@ -2,8 +2,7 @@ import json
 import pathlib
 import typing as tp
 
-import final_solution
-
+from final_solution.solution import score_texts
 
 PATH_TO_TEST_DATA = pathlib.Path("data") / "test_texts.json"
 PATH_TO_OUTPUT_DATA = pathlib.Path("results") / "output_scores.json"
@@ -23,7 +22,7 @@ def save_data(data, path: pathlib.PosixPath = PATH_TO_OUTPUT_DATA):
 
 def main():
     texts = load_data()
-    scores = final_solution.solution.score_texts(texts)
+    scores = score_texts(texts)
     save_data(scores)
 
 
