@@ -8,7 +8,7 @@ def accuracy_score(y_true: List[int], y_pred: List[int]) -> float:
     @return: float - Значение точности прогноза.
     """
     correct: int = sum(y_t == y_p for y_t, y_p in zip(y_true, y_pred))
-    return round(correct / len(y_true) if y_true else 0, 3)
+    return correct / len(y_true) if y_true else 0
 
 
 def macro_f1_score(y_true: List[int], y_pred: List[int], n_classes: int) -> float:
@@ -40,7 +40,7 @@ def macro_f1_score(y_true: List[int], y_pred: List[int], n_classes: int) -> floa
         f1 = 2 * precision * recall / (precision + recall)
         scores.append(f1)
 
-    return round(sum(scores) / len(scores) if scores else 0, 3)
+    return sum(scores) / len(scores) if scores else 0
 
 
 def team_score(y_true: List[int], y_pred: List[int], n_classes: int) -> float:
@@ -53,4 +53,4 @@ def team_score(y_true: List[int], y_pred: List[int], n_classes: int) -> float:
     accuracy: float = accuracy_score(y_true, y_pred)
     f1_score: float = macro_f1_score(y_true, y_pred, n_classes)
 
-    return round(100 * ((0.5 * f1_score) + (0.5 * accuracy)), 3)
+    return 100 * ((0.5 * f1_score) + (0.5 * accuracy))
