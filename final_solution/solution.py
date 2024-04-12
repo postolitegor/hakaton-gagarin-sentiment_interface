@@ -19,6 +19,9 @@ def score_texts(
     >>> assert all([len(m) < 10 ** 11 for m in messages]) # all messages are shorter than 2048 characters
     """
 
+    # To support checking length and indexing of object
+    messages = list(messages) if hasattr(messages, "__iter__") else [messages]
+
     # Prompt check for empty input and single empty string
     if not messages:
         return []
