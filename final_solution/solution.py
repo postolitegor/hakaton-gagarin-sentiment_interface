@@ -1,31 +1,41 @@
 import typing as tp
 
 EntityScoreType = tp.Tuple[int, float]  # (entity_id, entity_score)
-MessageResultType = tp.List[
-    EntityScoreType
-]  # list of entity scores,
+MessageResultType = tp.List[EntityScoreType]
 
 
-#    for example, [(entity_id, entity_score) for entity_id, entity_score in entities_found]
-
-
-def score_texts(
-        messages: tp.Iterable[str], *args, **kwargs
-) -> tp.Iterable[MessageResultType]:
+def score_texts(messages: tp.Iterable[str], *args, **kwargs) -> tp.Iterable[MessageResultType]:
     """
-    Main function (see tests for more clarifications)
-    Args:
-        messages (tp.Iterable[str]): any iterable of strings (utf-8 encoded text messages)
+    Evaluate the score for each company in each message.
 
-    Returns:
-        tp.Iterable[tp.Tuple[int, float]]: for any messages returns MessageResultType object
-    -------
-    Clarifications:
-    >>> assert all([len(m) < 10 ** 11 for m in messages]) # all messages are shorter than 2048 characters
+    @param messages: Iterable collection of strings (utf-8 encoded text messages)
+    @return: Iterable collection of company scores (company id, score) for each message.
+    @raises ValueError: If any of the message length is more than 2048 characters.
     """
-    result = [
-        [(1, 0.5), (2, 0.8), (3, 0.3)],
-        [(4, 0.7), (5, 0.2), (6, 0.9)]
+
+    # Prompt check for empty input and single empty string
+    if not messages:
+        return []
+
+    if len(messages) == 1 and messages[0] == "":
+        return [[tuple()]]
+
+    # Raise an error if any messages exceed limit of 2048 characters
+    if any(len(message) > 2048 for message in messages):
+        raise ValueError("Each message should be less than or equal to 2048 characters")
+
+    # TODO: fix me
+    COMPANIES = {"Сбер": 150, "Тинькофф": 225}
+    VALUE = 3.0
+
+    # Use a list comprehension to generate scores for all messages
+    scores = [
+        [
+            (base_score, VALUE)
+            for company, base_score in COMPANIES.items()
+            if message.count(company) > 0
+        ]
+        for message in messages
     ]
 
-    return result
+    return scores
